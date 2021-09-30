@@ -12,6 +12,7 @@ import airsim
 import logging
 import time
 import copy
+import numpy
 
 from multiprocessing import Process
 from datetime import datetime
