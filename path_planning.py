@@ -329,15 +329,3 @@ class PathPlanning(Process):
         time.sleep(0.01)
         # move_future.join()
         return True
-
-    def star_to_move(coords):
-        lcomm = []
-        for i in coords:
-            if(i % 5):
-                PosVec3(
-                    coords[i](0),
-                    coords[i](1),
-                    coords[i](2)
-                )
-                lcomm.append(()
-        return lcomm
