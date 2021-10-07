@@ -20,6 +20,7 @@ from multiprocessing.queues import Empty
 
 from utils.data_classes import PosVec3, MovementCommand
 from utils.killer_utils import GracefulKiller
+from utils.position_utils import position_to_list
 from airsim.types import YawMode
 # TODO Create status library
 
@@ -50,6 +51,7 @@ class PathPlanning(Process):
         # Determining whether we are in the Air or Not
         self.airborne = False
         self.global_map = None
+        self.local_position = PosVec3()
         # Allows for global
         # Use the pre-built map and then use the FOV of the sensors to
         # user map so that they can use it.
@@ -90,6 +92,12 @@ class PathPlanning(Process):
         self.airsim_client.enableApiControl(True, self.drone_id)
         self.log.info(
             "AirSim API connected. Vehicle is armed and API control is active")
+    
+    def update_local_position(self):
+        state_data = self.airsim_client.getMultirotorState(
+            vehicle_name=self.drone_id)
+        self.local_position = position_to_list(
+            state_data.kinematics_estimated.position, frame="local")
 
     def generate_trajectory(self, point, velocity, characteristics=[]):
         """
@@ -254,6 +262,7 @@ class PathPlanning(Process):
         # Main Execution
         self.log.info("Beginning main path planning execution")
         while not killer.kill_now:
+            self.update_local_position()
             # Check the queue for commands. Will block until message received.
             commands = self.receive_commands()
             # TODO Add a common inter-process message to either containerize
