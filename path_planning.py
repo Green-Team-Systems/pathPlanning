@@ -31,7 +31,6 @@ class PathPlanning(Process):
     to include submitting points to the low-level controller, handling
     tracking of the current position and ensuring that all interactions
     are being handled appropriately.
-
     ## Inputs:
     - queue [Queue] Transmission queue to communicate with main process.
     - drone_id [string] Unique identifier for the UAV
@@ -78,10 +77,8 @@ class PathPlanning(Process):
         Generate the AirSim multirotor client, arming the vehicle
         and enabling API control so that the vehicle is ready to take
         commands from the user.
-
         ## Inputs:
         - None
-
         ## Outputs:
         - Assigns the multirotor client to the class airsim_client
         variable.
@@ -101,7 +98,6 @@ class PathPlanning(Process):
 
     def generate_trajectory(self, point, velocity, characteristics=[]):
         """
-
         """
         # point (x,y,z)
         # velocity
@@ -122,7 +118,6 @@ class PathPlanning(Process):
         Fly to a new position, receiving the position either directly
         from the main intelligence module or as a component of a path
         planning algorithm.
-
         Inputs:
         - position [PosVec3] Position to move to, given as X, Y and Z
                              coordinates relative to the body coord.
@@ -143,10 +138,8 @@ class PathPlanning(Process):
         AirSim.
         The client call returns a future and we wait for that future to
         resolve until we continue execution.
-
         ## Inputs:
         - None
-
         ## Outputs:
         - Informs the path planning module that the UAV is now
         airborne.
@@ -173,7 +166,6 @@ class PathPlanning(Process):
         commands are the same ignore that command because it was a
         duplicate given by intelligence module due to processing
         constraints.
-
         TODO Implement some type of execution status that can be
              tracked by the Intel module so we don't get eroneous
              movement commands.
@@ -201,10 +193,8 @@ class PathPlanning(Process):
         UAV. We listen on the queue, in blocking mode when we are not
         doing other computation, and once we receive a new location, we
         execute that method.
-
         ## Inputs
         - None
-
         ## Outputs
         A list of PosVec3 local positions to command the UAV to. It
         could be a set of positions that equal a trajectory or just the
@@ -236,7 +226,6 @@ class PathPlanning(Process):
         """
         Override of the Process run command to define behavior of the
         path planning module.
-
         Basic workflow:
         1. Check for a command to build a path
         2. Check for a raw position to be given
@@ -245,7 +234,6 @@ class PathPlanning(Process):
             3b. Build trajectory and store
             3c. Inform control trajecotry generated
         4. Execute trajectory or push next location
-
         TODO Refactor workflow to use ROS
         """
         Process.run(self)
@@ -256,13 +244,15 @@ class PathPlanning(Process):
 
         if not self.airborne and self.simulation:
             self.takeoff()
-        self.command_queue.put("Takeoff Completed")
+        else:
+            self.command_queue.put("Takeoff Completed")
         # TODO What if there is a collision or error?
 
         # Main Execution
         self.log.info("Beginning main path planning execution")
         while not killer.kill_now:
-            self.update_local_position()
+            if self.simulation:
+                self.update_local_position()
             # Check the queue for commands. Will block until message received.
             commands = self.receive_commands()
             # TODO Add a common inter-process message to either containerize
@@ -313,7 +303,6 @@ class PathPlanning(Process):
         """
         Given a MovementCommand, send the appropriate AirSim API call
         to move the vehicle in the next direction.
-
         ## Inputs:
         - command [MovementCommand] data structure containing the pos,
                                     heading and speed of the next pos
@@ -338,3 +327,5 @@ class PathPlanning(Process):
         time.sleep(0.01)
         # move_future.join()
         return True
+
+    
