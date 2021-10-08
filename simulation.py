@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     def star_to_move(coords):
             lcomm = list()
-            for i in coords:
+            for i in range(len(coords)):
                 if(i % 5 == 0):
                     posTemp = PosVec3(
                         X=coords[i][0],
