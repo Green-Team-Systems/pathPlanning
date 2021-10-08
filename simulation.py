@@ -46,7 +46,11 @@ if __name__ == "__main__":
                         Y=coords[i][1],
                         Z=coords[i][2]
                     )
-                    calcheading = math.tan(coords[i][1]/coords[i][0])
+                    if(coords[i][0] == 0):
+                        if(coords[i][1] > 0): calcheading = 0
+                        else: calcheading = 180
+                    else:
+                        calcheading = math.atan(coords[i][1]/coords[i][0])
                     speed = 5.0
                     mvmCmd = MovementCommand(position = posTemp, heading = calcheading ,speed=5.0)
                     lcomm.append(mvmCmd)
