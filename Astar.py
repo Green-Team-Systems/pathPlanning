@@ -11,21 +11,25 @@ class Astar():
         for i in range(n):
             for j in range(m):
                 for k in range(o):
-                    if i == 0 and j == 0 and k == 0:
-                        self.graph.add_node((i, j, k))
-                    elif i == 0 and j == 0:
-                        self.graph.add_node((i, j, k), {(i, j, k - 1): 1})
-                    elif i == 0 and k == 0:
-                        self.graph.add_node((i, j, k), {(i, j - 1, k): 1})
-                    elif j == 0 and k == 0:
-                        self.graph.add_node((i, j, k), {(i - 1, j, k): 1})
-                    elif i == 0:
-                        self.graph.add_node((i, j, k), {(i, j - 1, k): 1, (i, j, k - 1): 1})
-                    elif j == 0:
-                        self.graph.add_node((i, j, k), {(i - 1, j, k): 1, (i, j, k - 1): 1})
-                    elif k == 0:
-                        self.graph.add_node((i, j, k), {(i - 1, j, k): 1, (i, j - 1, k): 1})
+                    if i >= 0 and i <= 5 and j >= 0 and j <= 5 and k >= 3 and k < 5:
+                        print('skip')
                     else:
-                        self.graph.add_node((i, j, k), {(i, j - 1, k): 1, (i - 1, j, k): 1, (i, j, k - 1): 1})
+                        if i == 0 and j == 0 and k == 0:
+                            self.graph.add_node((i, j, k))
+                        elif i == 0 and j == 0:
+                            self.graph.add_node((i, j, k), {(i, j, k - 1): 1})
+                        elif i == 0 and k == 0:
+                            self.graph.add_node((i, j, k), {(i, j - 1, k): 1})
+                        elif j == 0 and k == 0:
+                            self.graph.add_node((i, j, k), {(i - 1, j, k): 1})
+                        elif i == 0:
+                            self.graph.add_node((i, j, k), {(i, j - 1, k): 1, (i, j, k - 1): 1})
+                        elif j == 0:
+                            self.graph.add_node((i, j, k), {(i - 1, j, k): 1, (i, j, k - 1): 1})
+                        elif k == 0:
+                            self.graph.add_node((i, j, k), {(i - 1, j, k): 1, (i, j - 1, k): 1})
+                        else:
+                            self.graph.add_node((i, j, k), {(i, j - 1, k): 1, (i - 1, j, k): 1, (i, j, k - 1): 1})
         return dijkstar.find_path(self.graph, tuple(start), tuple(end)).nodes
+
 
