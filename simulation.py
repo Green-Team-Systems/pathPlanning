@@ -11,7 +11,7 @@ if __name__ == "__main__":
     drone_id = "Drone1"
 
     # When using AirSim, set to true
-    simulation = False
+    simulation = True
 
     # Vehicle has taken off
     takeoff_completed = False
@@ -25,15 +25,14 @@ if __name__ == "__main__":
     # The process is running separately of this process
     planner.start()
 
-    '''while not takeoff_completed:
+    while not takeoff_completed:
         try:
-            print("Trying to takeoff")
             message = path_planning_queue.get(block=True, timeout=0.0)
             if message == "Takeoff Completed":
                 takeoff_completed = True
             # TODO Handle takeoff failures
         except Exception:
-            pass'''
+            pass
 
     cmds = list()
 
@@ -53,7 +52,7 @@ if __name__ == "__main__":
                     calcheading = 90
 
                 speed = 5.0
-                mvmCmd = MovementCommand(position = posTemp, heading = calcheading ,speed=5.0)
+                mvmCmd = MovementCommand(position = posTemp, heading = 0, speed=5.0)
                 lcomm.append(mvmCmd)
                 print("Appended new movement command to lcomm")
         return lcomm
