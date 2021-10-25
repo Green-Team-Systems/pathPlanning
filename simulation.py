@@ -38,25 +38,6 @@ if __name__ == "__main__":
 
 
     def star_to_move(coords):
-<<<<<<< HEAD
-            lcomm = list()
-            for i in range(len(coords)):
-                if(i % 5 == 0):
-                    posTemp = PosVec3(
-                        X=coords[i][0],
-                        Y=coords[i][1],
-                        Z=coords[i][2]
-                    )
-                    if(coords[i][0] == 0):
-                        if(coords[i][1] > 0): calcheading = 0
-                        else: calcheading = 180
-                    else:
-                        calcheading = math.atan(coords[i][1]/coords[i][0])
-                    speed = 5.0
-                    mvmCmd = MovementCommand(position = posTemp, heading = calcheading ,speed=5.0)
-                    lcomm.append(mvmCmd)
-            return lcomm
-=======
         lcomm = list()
         for i in range(len(coords)):
             if(i % 5 == 0):
@@ -75,7 +56,6 @@ if __name__ == "__main__":
                 lcomm.append(mvmCmd)
                 print("Appended new movement command to lcomm")
         return lcomm
->>>>>>> bb9a5aa080ee6d81e714f9dc9713294eccae1495
 
     startCoords  = [0, 0, 0]
     endCoords = [100, 100, 22]
