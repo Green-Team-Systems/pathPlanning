@@ -1,10 +1,10 @@
 from Astar import *
-from mpl_toolkits import mplot3d
+# from mpl_toolkits import mplot3d
 import numpy as np
 import matplotlib.pyplot as plt
 
 startCoords  = [0, 0, 0]
-endCoords = [20, 20, 20]
+endCoords = [100, 100, 0]
 pathPlan = Astar()
 coords = pathPlan.DApath(startCoords, endCoords)
 print(coords)
@@ -19,9 +19,9 @@ for x in coords:
 xprime = []
 yprime = []
 zprime = []
-for i in range(0, 5):
-    for j in range(0, 5):
-        for k in range (3, 5):
+for i in range(30, 45):
+    for j in range(30, 45):
+        for k in range (0, 1):
             xprime.append(i)
             yprime.append(j)
             zprime.append(k)

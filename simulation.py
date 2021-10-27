@@ -25,6 +25,7 @@ if __name__ == "__main__":
     if simulation:
         airsim_client = airsim.MultirotorClient()
         airsim_client.confirmConnection()
+
     # Vehicle has taken off
     takeoff_completed = False
 
@@ -41,7 +42,7 @@ if __name__ == "__main__":
         try:
             message = path_planning_queue.get(block=True, timeout=0.0)
             if message == "Takeoff Completed":
-               
+
                 takeoff_completed = True
             # TODO Handle takeoff failures
         except Exception:
@@ -53,7 +54,7 @@ if __name__ == "__main__":
     def star_to_move(coords):
         lcomm = []
         for i in range(len(coords)):
-            if(i % 5 == 0):
+            if i % 10 == 0 or i == len(coords) - 1:
                 posTemp = PosVec3(
                     X=coords[i][0],
                     Y=coords[i][1],
@@ -71,11 +72,13 @@ if __name__ == "__main__":
         return lcomm
 
     startCoords  = [0, 0, 0]
-    endCoords = [100, 100, 22]
+    endx = int(input("Enter x coord destination: \n"))
+    endy = int(input("Enter y coord destination: \n"))
+    endCoords = [endx, endy, 0]
     pathPlan = Astar()
     coords = pathPlan.DApath(startCoords, endCoords)
 
-    cmds = star_to_move([(0, 0, 0), (0, 1, 0), (0, 2, 0), (0, 98, 0), (0, 99, 0), (0, 100, 0)])
+    cmds = star_to_move(coords)
     # End position user requests
     # cmds.append(MovementCommand(
     #    position=PosVec3(
@@ -91,14 +94,15 @@ if __name__ == "__main__":
         start_time = time.time()
         current_location = dict(X=0.0, Y=0.0, Z=0.0)
         for command in cmds:
+            print("Put 1 command")
             print(command)
             path_planning_queue.put(command)
             arrived = False
-            print("Put 1 command")
 
             while not arrived:
                 state = airsim_client.getMultirotorState()
                 position = state.kinematics_estimated.position
+                print(position)
                 current_location["X"] = position.x_val
                 current_location["Y"] = position.y_val
                 current_location["Z"] = position.z_val
