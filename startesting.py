@@ -3,11 +3,12 @@ from Astar import *
 import numpy as np
 import matplotlib.pyplot as plt
 
-startCoords  = [0, 0, 0]
-endCoords = [100, 100, 0]
+startCoords  = (3, 3, 6)
+endCoords = (11, 11, 8)
 pathPlan = Astar()
-coords = pathPlan.DApath(startCoords, endCoords)
+coords = pathPlan.DApath(startCoords, endCoords, '1darrData.npy', [0, 20, 0, 20, 0, 20])
 print(coords)
+listo = np.load('1darrData.npy')
 
 xdata = []
 ydata = []
@@ -19,14 +20,25 @@ for x in coords:
 xprime = []
 yprime = []
 zprime = []
-for i in range(30, 45):
-    for j in range(30, 45):
-        for k in range (0, 1):
-            xprime.append(i)
-            yprime.append(j)
-            zprime.append(k)
+xdprime = []
+ydprime = []
+zdprime = []
+print(len(listo))
+for i in range(0, 19):
+    for j in range(0, 19):
+        for k in range (0, 19):
+            if(listo[i*400+j*20+k]):
+                bye = 1
+                #xprime.append(i)
+                #yprime.append(j)
+                #zprime.append(k)
+            else:
+                xdprime.append(i)
+                ydprime.append(j)
+                zdprime.append(k)
 fig = plt.figure(figsize=(4,4))
 ax = fig.add_subplot(111, projection='3d')
 ax.scatter3D(xdata, ydata, zdata)
 ax.scatter3D(xprime, yprime, zprime)
+ax.scatter3D(xdprime, ydprime, zdprime)
 plt.show()

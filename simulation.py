@@ -75,8 +75,11 @@ if __name__ == "__main__":
     endx = int(input("Enter x coord destination: \n"))
     endy = int(input("Enter y coord destination: \n"))
     endCoords = [endx, endy, 0]
+    coordsize = [0, 20, 0, 20, 0, 20] # size of length, width, and height.
     pathPlan = Astar()
-    coords = pathPlan.DApath(startCoords, endCoords)
+
+    filename = "1darr.npy" #name of file
+    coords = pathPlan.DApath(startCoords, endCoords, filename, coordsize)
 
     cmds = star_to_move(coords)
     # End position user requests
