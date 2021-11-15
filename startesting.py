@@ -3,12 +3,12 @@ from Astar import *
 import numpy as np
 import matplotlib.pyplot as plt
 
-startCoords  = (3, 3, 6)
-endCoords = (11, 11, 8)
+startCoords  = (60, 70, 70)
+endCoords = (60, 5, 60)
 pathPlan = Astar()
-coords = pathPlan.DApath(startCoords, endCoords, '1darrData.npy', [0, 20, 0, 20, 0, 20])
+coords = pathPlan.DApath(startCoords, endCoords, '1darr.npy', [0, 100, 0, 100, 0, 100])
 print(coords)
-listo = np.load('1darrData.npy')
+listo = np.load('1darr.npy')
 
 xdata = []
 ydata = []
@@ -24,21 +24,22 @@ xdprime = []
 ydprime = []
 zdprime = []
 print(len(listo))
-for i in range(0, 19):
-    for j in range(0, 19):
-        for k in range (0, 19):
-            if(listo[i*400+j*20+k]):
-                bye = 1
-                #xprime.append(i)
-                #yprime.append(j)
-                #zprime.append(k)
-            else:
-                xdprime.append(i)
-                ydprime.append(j)
-                zdprime.append(k)
+for i in range(0, 99):
+    for j in range(0, 99):
+        for k in range (0, 99):
+            if(listo[i*10000+j*100+k]):
+                xprime.append(i)
+                yprime.append(j)
+                zprime.append(k)
+            #else:
+                #xdprime.append(i)
+                #ydprime.append(j)
+                #zdprime.append(k)
+
+    print(i)
 fig = plt.figure(figsize=(4,4))
 ax = fig.add_subplot(111, projection='3d')
 ax.scatter3D(xdata, ydata, zdata)
-ax.scatter3D(xprime, yprime, zprime)
-ax.scatter3D(xdprime, ydprime, zdprime)
+#ax.scatter3D(xprime, yprime, zprime)
+#ax.scatter3D(xdprime, ydprime, zdprime)
 plt.show()

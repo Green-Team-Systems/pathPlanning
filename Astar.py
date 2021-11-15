@@ -19,16 +19,16 @@ class Astar():
             n = -size[0] + size[1]
             m = -size[2] + size[3]
             o = -size[4] + size[5]
-            for i in range(n*m*o):
-                if(not grid[i]):
+            for i in range(n*m*o): # false if open, true if closed
+                if(grid[i]):
                     pass
                 else:
                     xC = i//(n * o)
                     yC = (i//o) % n
                     zC = i % o
-                    xstat = xC != 0
-                    ystat = yC != 0
-                    zstat = zC != 0
+                    xstat = xC != 1
+                    ystat = yC != 1
+                    zstat = zC != 1
                     if(xstat and not grid[i - m * o]): 
                         self.graph.add_edge((xC, yC, zC), (xC - 1, yC, zC), 1)
                         # print('edge added at', xC, 'and', yC ,' and ', zC)
