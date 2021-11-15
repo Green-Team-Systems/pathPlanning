@@ -3,8 +3,8 @@ from Astar import *
 import numpy as np
 import matplotlib.pyplot as plt
 
-startCoords  = (60, 70, 70)
-endCoords = (60, 5, 60)
+startCoords  = (60, 70, 60)
+endCoords = (5, 5, 55)
 pathPlan = Astar()
 coords = pathPlan.DApath(startCoords, endCoords, '1darr.npy', [0, 100, 0, 100, 0, 100])
 print(coords)
@@ -39,7 +39,8 @@ for i in range(0, 99):
     print(i)
 fig = plt.figure(figsize=(4,4))
 ax = fig.add_subplot(111, projection='3d')
-ax.scatter3D(xdata, ydata, zdata)
 #ax.scatter3D(xprime, yprime, zprime)
+ax.scatter3D(xdata, ydata, zdata)
+
 #ax.scatter3D(xdprime, ydprime, zdprime)
 plt.show()
