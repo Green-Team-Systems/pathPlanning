@@ -1,3 +1,6 @@
+# Used for sending commands to the simulation. 
+
+
 import time
 from utils.position_utils import position_to_list
 import setup_path

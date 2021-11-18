@@ -1,3 +1,12 @@
+# =============================================================================
+# Created By: Marvin Mui, Joseph Woo
+# Authors: Marvin Mui, Joseph Woo
+# 
+# Description:
+# This module is used for generation of the dijkstar path for the most optimal path for the drone to follow
+# Note: Most likely to upgrade to Astar, specifically ROC star. 
+# =============================================================================
+
 import dijkstar
 import math
 import numpy as np
