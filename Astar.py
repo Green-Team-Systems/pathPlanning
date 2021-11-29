@@ -22,15 +22,21 @@ class Astar():
     def __init__(self):
         self.graph = dijkstar.Graph(undirected=True)
 
+
+
     def DApath(self, start, end, filename, size):
         if exists(filename):
             grid = np.load(filename)
+
+            # getting dimensions of the file
             n = -size[0] + size[1]
             m = -size[2] + size[3]
             o = -size[4] + size[5]
+
+            # iterate through every single node in the file. 
             for i in range(n*m*o): # false if open, true if closed
                 if(grid[i]):
-                    pass
+                    pass #
                 else:
                     xC = i//(n * o)
                     yC = (i//o) % n
