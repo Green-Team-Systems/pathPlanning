@@ -242,7 +242,7 @@ class VehicleClient:
 
         # because this method returns std::vector<uint8>, msgpack decides to encode it as a string unfortunately.
         result = self.client.call('simGetImage', camera_name, image_type, vehicle_name, external)
-        if (result == "" or result == "\0"):
+        if result in ["", "\0"]:
             return None
         return result
 
