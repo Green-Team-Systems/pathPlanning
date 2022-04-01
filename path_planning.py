@@ -13,6 +13,7 @@ import logging
 import time
 import copy
 import numpy
+import dijkstar
 
 from multiprocessing import Process
 from datetime import datetime
@@ -63,11 +64,11 @@ class PathPlanning(Process):
         # logging.basicConfig(format=FORMAT,
          #                   level=logging.INFO)
         file_handler = logging.FileHandler(
-            "logs/{drone_id}-Path-Planning-{date}.log".format(
-                drone_id=self.drone_id,
-                date=datetime.utcnow()
+            "logs/{drone_id}-Path-Planning.log".format(
+                drone_id=self.drone_id
         ))
-        self.log = logging.getLogger(self.drone_id + __name__)
+        logging.info("Test")
+        self.log = logging.getLogger("Drone1")
         self.log.setLevel(logging.INFO)
         self.log.addHandler(file_handler)
 
@@ -176,7 +177,7 @@ class PathPlanning(Process):
         ## Outputs:
         Boolean of whether this is a new command or not
         """
-        if self.last_command == None:
+        if self.last_command is None:
             return True
 
         if (command.position.X == self.last_command.position.X
@@ -209,18 +210,16 @@ class PathPlanning(Process):
         # maybe, depending on how we feel about this.
         # NOTE This doesn't work on MacOS due to:
         # NOTE https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Queue.qsize
-        try:
+        """try:
             num_messages = self.command_queue.qsize()
         except NotImplementedError:
             self.log.debug("MacOS System does not implement _semlock")
-            num_messages = 1
-        if num_messages > 0:
-            for _ in range(num_messages):
-                try:
-                    messages.append(self.command_queue.get(
-                        block=True, timeout=0.0))
-                except Empty:
-                    continue
+            num_messages = 1"""
+        try:
+            messages.append(self.command_queue.get(
+                block=False))
+        except Exception:
+            pass
 
         return messages
 
@@ -248,7 +247,10 @@ class PathPlanning(Process):
 
         if not self.airborne and self.simulation:
             self.takeoff()
-        self.command_queue.put("Takeoff Completed")
+        count = 0
+        while count < 5:
+            self.command_queue.put("Takeoff Completed")
+            count += 1
         # TODO What if there is a collision or error?
 
         # Main Execution
@@ -282,9 +284,8 @@ class PathPlanning(Process):
                             )
                         self.last_command = copy.deepcopy(command)
                     except AssertionError as error:
-                        self.log.error("{}: {}".format(
-                            datetime.utcnow(),
-                            error)
+                        self.log.error("{}: Assertion".format(
+                            datetime.utcnow())
                         )
             else:
                 time.sleep(0.1)
@@ -292,6 +293,7 @@ class PathPlanning(Process):
         
         # Clean shutdown by disarming and disabling API control
         if self.simulation:
+            self.airsim_client.reset()
             self.airsim_client.armDisarm(False, vehicle_name=self.drone_id)
             self.airsim_client.enableApiControl(
                 False,
